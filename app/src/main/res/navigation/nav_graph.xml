@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.raywenderlich.timefighter.ui.main.MainFragment"
+        android:label="main_fragment"
+        tools:layout="@layout/main_fragment" >
+        <action
+            android:id="@+id/action_mainFragment_to_timeFighterFragment"
+            app:destination="@id/timeFighterFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_dataBindingFragment"
+            app:destination="@id/dataBindingFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_josepFragment"
+            app:destination="@id/josepFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/timeFighterFragment"
+        android:name="com.raywenderlich.timefighter.ui.time_fighter.TimeFighterFragment"
+        android:label="time_fighter_fragment"
+        tools:layout="@layout/time_fighter_fragment" />
+    <fragment
+        android:id="@+id/dataBindingFragment"
+        android:name="com.raywenderlich.timefighter.ui.data_binding.DataBindingFragment"
+        android:label="data_binding_fragment"
+        tools:layout="@layout/data_binding_fragment" />
+    <fragment
+        android:id="@+id/josepFragment"
+        android:name="com.raywenderlich.timefighter.ui.josep.JosepFragment"
+        android:label="josep_fragment"
+        tools:layout="@layout/josep_fragment" />
+</navigation>
