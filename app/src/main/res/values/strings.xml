@@ -1,10 +1,15 @@
 <resources>
     <string name="app_name">Time Fighter</string>
-    <string name="todo_time_fighter_here">TODO TIME FIGHTER HERE</string>
     <string name="todo_main_fragment_here">TODO MAIN FRAGMENT HERE</string>
     <string name="todo_data_binding_fragment_here">TODO DATA BINDING FRAGMENT HERE</string>
     <string name="todo_test_fragment_here">TODO TEST FRAGMENT HERE</string>
     <string name="time_fighter">Time Fighter</string>
     <string name="data_binding">Data Binding</string>
     <string name="test">Test</string>
+    <string name="plusButton">+</string>
+    <string name="minusButton">-</string>
+    <string name="yourScore">Your Score: %1$d</string>
+    <string name="timeLeft">Time Left: %1$d</string>
+    <string name="tapMe">Tap Me!</string>
+    <string name="gameOverMessage">Times up! Your score is: %1$d</string>
 </resources>

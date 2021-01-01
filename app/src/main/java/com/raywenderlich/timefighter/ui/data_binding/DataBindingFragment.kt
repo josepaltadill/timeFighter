@@ -1,14 +1,16 @@
 package com.raywenderlich.timefighter.ui.data_binding
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.raywenderlich.timefighter.R
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.raywenderlich.timefighter.databinding.DataBindingFragmentBinding
 
 class DataBindingFragment : Fragment() {
+
+    private lateinit var binding : DataBindingFragmentBinding
 
     companion object {
         fun newInstance() = DataBindingFragment()
@@ -20,13 +22,25 @@ class DataBindingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.data_binding_fragment, container, false)
+        binding = DataBindingFragmentBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(DataBindingViewModel::class.java)
         // TODO: Use the ViewModel
+        binding.counter.setText(viewModel.counter.toString())
+
+        binding.buttonPlus.setOnClickListener { _ ->
+            viewModel.counter++
+            binding.counter.setText(viewModel.counter.toString())
+        }
+
+        binding.buttonMinus.setOnClickListener { _ ->
+            viewModel.counter--
+            binding.counter.setText(viewModel.counter.toString())
+        }
     }
 
 }
