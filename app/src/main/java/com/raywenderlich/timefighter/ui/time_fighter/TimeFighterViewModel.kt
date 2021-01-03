@@ -5,4 +5,5 @@ import androidx.lifecycle.ViewModel
 class TimeFighterViewModel : ViewModel() {
     var score:Int = 0
     var timeLeftOnTimer:Long = 20000
+    var gameStarted:Boolean = false
 }

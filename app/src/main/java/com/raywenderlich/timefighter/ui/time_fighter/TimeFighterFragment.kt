@@ -27,7 +27,6 @@ class TimeFighterFragment : Fragment() {
     internal lateinit var countDownTimer: CountDownTimer
     internal val initialCountDown: Long = 20000
     internal val countDownInterval: Long = 1000
-    internal var gameStarted = false
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -49,24 +48,30 @@ class TimeFighterFragment : Fragment() {
                 incrementScore()
             }
         }
-        Log.d(TAG, "onCreate called. Score is: ${viewModel.score}")
+        Log.d(TAG, "onCreate called. Score is: ${viewModel.score}, temps es: ${viewModel.timeLeftOnTimer} i partida començada: ${viewModel.gameStarted}")
+//        restoreGame()
 
-        resetGame()
+        if (viewModel.gameStarted) {
+            Log.d(TAG, "onCreate called true. Score is: ${viewModel.score}, temps es: ${viewModel.timeLeftOnTimer} i partida començada: ${viewModel.gameStarted}")
+            restoreGame()
+        } else {
+            Log.d(TAG, "onCreate called false. Score is: ${viewModel.score}, temps es: ${viewModel.timeLeftOnTimer} i partida començada: ${viewModel.gameStarted}")
+            resetGame()
+        }
 
     }
 
     private fun startGame() {
-        gameStarted = true
+        viewModel.gameStarted = true
         countDownTimer.start()
     }
 
     private fun incrementScore() {
-        if(!gameStarted) {
+        if(!viewModel.gameStarted) {
             startGame()
         }
 
         viewModel.score += 1
-//        val newScore = getString(R.string.yourScore, viewModel.score)
         binding.gameScoreTextView.text = getString(R.string.yourScore, viewModel.score)
     }
 
@@ -78,21 +83,54 @@ class TimeFighterFragment : Fragment() {
     }
 
     private fun resetGame() {
-        gameStarted = false
         viewModel.score = 0
         binding.gameScoreTextView.text = getString(R.string.yourScore, viewModel.score)
-        binding.timeLeftTextView.text = getString(R.string.timeLeft, initialCountDown / 1000)
+
+        val initialTimeLeft = initialCountDown / 1000
+        binding.timeLeftTextView.text = getString(R.string.timeLeft, initialTimeLeft)
+        Log.d(TAG, "Estic al reset. Score is: ${viewModel.score} i temps es: ${viewModel.timeLeftOnTimer}")
 
         countDownTimer = object : CountDownTimer(initialCountDown, countDownInterval) {
             override fun onTick(millisUntilFinished: Long) {
-                viewModel.timeLeftOnTimer = millisUntilFinished / 1000
-                binding.timeLeftTextView.text = getString(R.string.timeLeft, viewModel.timeLeftOnTimer)
+                activity?.let {
+                    viewModel.timeLeftOnTimer = millisUntilFinished
+                    val timeLeft = millisUntilFinished / 1000
+                    binding.timeLeftTextView.text = getString(R.string.timeLeft, timeLeft)
+                    Log.d(TAG, "Estic al contador del resetgame. Temps es: ${viewModel.timeLeftOnTimer}")
+                }
             }
 
             override fun onFinish() {
                 endGame()
             }
         }
+        viewModel.gameStarted = false
+    }
+
+    private fun restoreGame() {
+        binding.gameScoreTextView.text = getString(R.string.yourScore, viewModel.score)
+
+        val restoredTime = viewModel.timeLeftOnTimer / 1000
+        binding.timeLeftTextView.text = getString(R.string.timeLeft, restoredTime)
+
+        Log.d(TAG, "Estic al restore. Score is: ${viewModel.score} i temps es: ${viewModel.timeLeftOnTimer}")
+
+        countDownTimer = object : CountDownTimer(viewModel.timeLeftOnTimer, countDownInterval) {
+            override fun onTick(millisUntilFinished: Long) {
+                activity?.let {
+                    viewModel.timeLeftOnTimer = millisUntilFinished
+                    val timeLeft = millisUntilFinished / 1000
+                    binding.timeLeftTextView.text = getString(R.string.timeLeft, timeLeft)
+                    Log.d(TAG, "Estic al contador del restoregame. Temps es: ${timeLeft}")
+                }
+            }
+
+            override fun onFinish() {
+                endGame()
+            }
+        }
+
+        startGame()
     }
 
 }
